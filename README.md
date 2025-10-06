@@ -29,7 +29,7 @@ Como é apenas a entrega 1, o projeto ainda não esta funcionando
 # Como Executar
 
 1. Importar o projeto no **Eclipse** ou **IntelliJ**
-2. Executar a classe `Loja.java`
+2. Executar a classe Loja.java
 3. Interagir via terminal conforme o menu apresentado
 
 # Próximas Entregas (Planejamento)

@@ -7,15 +7,15 @@ Esta é a **Entrega 01**, contendo: estrutura de código, diagramas UML e protó
 
 src/
 
- core/ → Entidades principais (Produto, ItemPedido, EntidadeBase)
+  core/ → Entidades principais (Produto, ItemPedido, EntidadeBase)
 
- domain/ → Classes de domínio e interfaces (Carrinho, Exibivel)
+  domain/ → Classes de domínio e interfaces (Carrinho, Exibivel)
 
- repository/ → Persistência em arquivo (GerenciadorDeArquivos)
+  repository/ → Persistência em arquivo (GerenciadorDeArquivos)
 
- user/ → Usuários do sistema (Cliente, Administrador)
+  user/ → Usuários do sistema (Cliente, Administrador)
 
- view/ → Interface de terminal (Loja, PainelAdministrador)
+  view/ → Interface de terminal (Loja, PainelAdministrador)
 
 # Funcionalidades da Entrega 01
 

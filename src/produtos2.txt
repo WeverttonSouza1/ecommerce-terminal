@@ -1,6 +1,0 @@
-1;Camiseta Branca;29.9;50
-2;Calça Jeans;89.9;30
-3;Tênis Esportivo;149.99;20
-4;Boné Azul;39.5;15
-5;Jaqueta de Couro;199.0;8
-6;Produto Teste;79.5;10

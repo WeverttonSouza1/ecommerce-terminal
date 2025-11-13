@@ -1,0 +1,4 @@
+1;Admin;admin@admin.com;admin;ADMIN;
+2;Kenny;kenny@gmail.com;1234;CLIENTE;
+3;Kenny;kenny0@gmail.com;1234;CLIENTE;Rua 34, 432, Boa Viagem, Recife
+4;Wevertton;wevertton@gmail.com;1234;CLIENTE;rua 3, 123, bairro 2, Surubim

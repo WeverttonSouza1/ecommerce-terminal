@@ -1,0 +1,20 @@
+1;Mouse Gamer;Mouse óptico RGB com 6 botões programáveis;150.00;20
+2;Teclado Mecânico;Teclado mecânico com switches Red e iluminação RGB;250.00;15
+3;Headset Gamer;Fone de ouvido com microfone e som surround 7.1;180.00;12
+4;Monitor 24";Monitor Full HD 24 polegadas com painel IPS;899.00;8
+5;Cadeira Gamer;Cadeira ergonômica reclinável com apoio de braço;1250.00;5
+6;Notebook Dell Inspiron;Notebook com i5 12ª geração e 8GB RAM;3899.00;10
+7;SSD 1TB;SSD NVMe Gen4 de 1TB para alto desempenho;499.00;25
+8;HD Externo 2TB;HD portátil USB 3.0 de 2TB;359.00;18
+9;Placa de Vídeo RTX 3060;Placa com 12GB GDDR6, ideal para jogos e design;1899.00;7
+10;Fonte 650W;Fonte 80 Plus Bronze para PCs gamer;429.00;0
+11;Cooler CPU RGB;Cooler com dissipador de alumínio e LED RGB;159.00;21
+12;Mousepad Grande;Mousepad estendido antiderrapante 80x30cm;69.00;30
+13;Cabo HDMI 2.1;Cabo HDMI de 2 metros compatível com 4K e 8K;49.00;37
+14;Webcam Full HD;Câmera 1080p com microfone embutido;229.00;16
+15;Caixa de Som Bluetooth;Caixa portátil com bateria de 10h;199.00;25
+16;Smartwatch FitPro;Relógio inteligente com monitor cardíaco;289.00;17
+17;Pendrive 64GB;Pendrive USB 3.2 de alta velocidade;79.00;50
+18;Carregador Portátil 20000mAh;Powerbank de carga rápida com 2 saídas;249.00;12
+19;Cabo USB-C;Cabo trançado de 1 metro para carregamento rápido;39.00;58
+20;Hub USB 4 portas;Hub USB 3.0 com 4 entradas e LED indicador;89.00;35

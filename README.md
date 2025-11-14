@@ -77,6 +77,9 @@ src/
 * Menu inicial (Entrar / Cadastrar-se / Ver catálogo / Sair)
 * Menu completo do cliente
 * Painel do administrador
+  * Para ter acesso:
+    * email: admin@admin.com
+    * senha: admin
 * Leituras e validações de entrada
 
 ## Observações Importantes da Entrega 02:

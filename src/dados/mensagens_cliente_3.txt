@@ -1,4 +1,0 @@
-Remetente: Administrador
-Data: 2025-10-31T08:28:05.183370500
-Mensagem: Seu pedido #2 agora está com status: ENVIADO
-------------------------------------------------

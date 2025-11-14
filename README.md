@@ -99,6 +99,6 @@ src/
 
 Projeto desenvolvido por **Wevertton Souza**  
 Disciplina: *Projeto de Software*  
-Professor: *Augusto César Oliveira*
+Professor: *Augusto César Oliveira*  
 Instituição: *UPE*  
 Ano/Semestre: *2025.2*  

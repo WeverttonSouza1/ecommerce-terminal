@@ -1,4 +1,4 @@
-### Sistema de E-commerce (Terminal) — Projeto Acadêmico
+# Sistema de E-commerce (Terminal) — Projeto Acadêmico
 ---
 **Entrega 02 – Projeto de Software (UPE – 2025.2)**
 
@@ -7,7 +7,7 @@ O sistema simula o funcionamento básico de uma loja virtual, permitindo cadastr
 
 Este mesmo projeto está sendo estendido e reaproveitado também para a disciplina **Programação III**, onde são exigidos padrões de projeto adicionais.
 
-### Objetivo Geral do Projeto:
+## Objetivo Geral do Projeto:
 
 Construir um sistema de e-commerce completo em Java, com forte foco em **engenharia de software**, utilizando:
 
@@ -19,7 +19,7 @@ Construir um sistema de e-commerce completo em Java, com forte foco em **engenha
 
 O projeto é **100% acadêmico**, com foco em aprendizagem de boas práticas, padrões de projeto e arquitetura limpa.
 
-### Estrutura Atual do Projeto:
+## Estrutura Atual do Projeto:
 
 ```
 src/
@@ -55,7 +55,7 @@ src/
       └── menu/MenuCliente.java
 ```
 
-### Funcionalidades Implementadas na Entrega 02
+## Funcionalidades Implementadas na Entrega 02
 
 ### Back-end:
 
@@ -72,21 +72,21 @@ src/
   * **State** (Status do Pedido)
   * **Observer** → *Notificar quando um produto voltar ao estoque, estrutura pronta, mas ainda NÃO funcional*
 
-### Interface de Terminal:
+## Interface de Terminal:
 
 * Menu inicial (Entrar / Cadastrar-se / Ver catálogo / Sair)
 * Menu completo do cliente
 * Painel do administrador
 * Leituras e validações de entrada
 
-### Observações Importantes da Entrega 02:
+## Observações Importantes da Entrega 02:
 
 * O **Observer** está parcialmente implementado, mas ainda **não está ativo** (não notifica clientes automaticamente).
 * O sistema funciona totalmente por **arquivos .txt**, mas já está preparado para migração fácil ao banco na Entrega 03.
 * Arquivos criados por usuário seguirão o formato:  
   usuario_(ID).txt, mensagens_cliente_(ID).txt e pedidos_cliente_(ID).txt
 
-### Como Executar:
+## Como Executar:
 
 1. Importar o projeto no **Eclipse** ou **IntelliJ**
 2. Executar a classe principal:
@@ -95,7 +95,7 @@ src/
 ```
 3. O terminal exibirá o menu inicial
 
-### Autoria:
+## Autoria:
 
 Projeto desenvolvido por **Wevertton Souza**  
 Disciplina: *Projeto de Software*  

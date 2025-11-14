@@ -1,47 +1,104 @@
-# Sistema de E-commerce (Terminal)
+### Sistema de E-commerce (Terminal) — Projeto Acadêmico
+---
+**Entrega 02 – Projeto de Software (UPE – 2025.2)**
 
-Projeto desenvolvido em **Java** para simular um sistema de e-commerce via terminal.  
-Esta é a **Entrega 01**, contendo: estrutura de código, diagramas UML e protótipo de baixa fidelidade.
+Este projeto é um **sistema de e-commerce executado via terminal**, desenvolvido em **Java**, como parte das entregas avaliativas da disciplina **Projeto de Software**.
+O sistema simula o funcionamento básico de uma loja virtual, permitindo cadastro de usuários, administração de produtos, simulação de carrinho e geração de pedidos.
 
-# Estrutura do Projeto
+Este mesmo projeto está sendo estendido e reaproveitado também para a disciplina **Programação III**, onde são exigidos padrões de projeto adicionais.
 
+### Objetivo Geral do Projeto:
+
+Construir um sistema de e-commerce completo em Java, com forte foco em **engenharia de software**, utilizando:
+
+* Modelagem UML (caso de uso + classes)
+* Arquitetura organizada em camadas
+* Persistência em arquivos (entrega 2) e futura integração com **PostgreSQL** (entrega 3)
+* Implementação de **padrões de projeto** (Factory Method, State, Observer — este último ainda não finalizado)
+* Interface textual interativa no terminal
+
+O projeto é **100% acadêmico**, com foco em aprendizagem de boas práticas, padrões de projeto e arquitetura limpa.
+
+### Estrutura Atual do Projeto:
+
+```
 src/
+ ├── core/          → Entidades centrais do projeto
+ │    ├── EntidadeBase.java
+ │    ├── ItemPedido.java
+ │    ├── Pedido.java
+ │    └── Produto.java
+ │
+ ├── domain/        → Classes auxiliares
+ │    ├── Carrinho.java
+ │    └── ExibivelInterface.java
+ │
+ ├── repository/    → Persistência em arquivo
+ │    ├── GerenciadorDeArquivos.java
+ │    ├── UsuarioRepository.java
+ │    └── MensagemRepository.java
+ │
+ ├── user/          → Usuários do sistema
+ │    ├── Usuario.java
+ │    ├── Cliente.java
+ │    └── Administrador.java
+ │
+ ├── observer/      → Padrão Observer (Notifica quando um produto volta ao estoque)
+ │
+ ├── factoryMethod/ → Padrão Factory Method (PIX, Cartão, Boleto)
+ │
+ ├── state/         → Padrão State para Pedido (Processando, Enviado, etc.)
+ │
+ └── view/          → Interface de terminal
+      ├── Loja.java
+      ├── PainelAdministrador.java
+      └── menu/MenuCliente.java
+```
 
-  core/ → Entidades principais (Produto, ItemPedido, EntidadeBase)
+### Funcionalidades Implementadas na Entrega 02
 
-  domain/ → Classes de domínio e interfaces (Carrinho, Exibivel)
+### Back-end:
 
-  repository/ → Persistência em arquivo (GerenciadorDeArquivos)
+* Cadastro e login de clientes
+* Login de administrador
+* CRUD completo de produtos
+* Carrinho de compras funcional
+* Finalização de pedido
+* Atualização de estoque
+* Mensagens para clientes (via arquivo)
+* Persistência em arquivos com IDs automáticos
+* Implementação dos padrões:  
+  * **Factory Method** (PIX, Cartão, Boleto)
+  * **State** (Status do Pedido)
+  * **Observer** → *Notificar quando um produto voltar ao estoque, estrutura pronta, mas ainda NÃO funcional*
 
-  user/ → Usuários do sistema (Cliente, Administrador)
+### Interface de Terminal:
 
-  view/ → Interface de terminal (Loja, PainelAdministrador)
+* Menu inicial (Entrar / Cadastrar-se / Ver catálogo / Sair)
+* Menu completo do cliente
+* Painel do administrador
+* Leituras e validações de entrada
 
-# Funcionalidades da Entrega 01
+### Observações Importantes da Entrega 02:
 
-- Estrutura base de classes
-- Diagrama de Classes UML
-- Diagrama de Casos de Uso UML
-- Protótipo de interface em terminal
+* O **Observer** está parcialmente implementado, mas ainda **não está ativo** (não notifica clientes automaticamente).
+* O sistema funciona totalmente por **arquivos .txt**, mas já está preparado para migração fácil ao banco na Entrega 03.
+* Arquivos criados por usuário seguirão o formato:  
+  usuario_(ID).txt, mensagens_cliente_(ID).txt e pedidos_cliente_(ID).txt
 
-Como é apenas a entrega 1, o projeto ainda não esta funcionando
-
-# Como Executar
+### Como Executar:
 
 1. Importar o projeto no **Eclipse** ou **IntelliJ**
-2. Executar a classe Loja.java
-3. Interagir via terminal conforme o menu apresentado
+2. Executar a classe principal:
+```
+   view.Loja
+```
+3. O terminal exibirá o menu inicial
 
-# Próximas Entregas (Planejamento)
-
-- **Entrega 02:** implementação completa das classes e persistência funcional
-- **Entrega 03:** integração com banco de dados relacional (SQLite ou MySQL)
-
-# Autoria
+### Autoria:
 
 Projeto desenvolvido por **Wevertton Souza**  
 Disciplina: *Projeto de Software*  
-Professor: *Augusto César Oliveira*  
+Professor: *Augusto César Oliveira*
 Instituição: *UPE*  
-Ano/Semestre: *2025.2*
-
+Ano/Semestre: *2025.2*  

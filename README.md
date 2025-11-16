@@ -52,7 +52,7 @@ src/
  └── view/          → Interface de terminal
       ├── Loja.java
       ├── PainelAdministrador.java
-      └── menu/MenuCliente.java
+      └── MenuCliente.java
 ```
 
 ## Funcionalidades Implementadas na Entrega 02

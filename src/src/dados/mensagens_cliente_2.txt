@@ -1,0 +1,4 @@
+Remetente: Sistema
+Data: 2025-11-24T06:08:08.482619800
+Mensagem: O produto 'Fonte 650W' voltou ao estoque!
+------------------------------------------------

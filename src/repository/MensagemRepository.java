@@ -10,7 +10,7 @@ public class MensagemRepository {
 
     private final Path pastaBase = Paths.get("src", "dados");
 
-    public MensagemRepository() {
+    public MensagemRepository() { // se o diretorio não existir ele cria
         try {
             if (!Files.exists(pastaBase)) Files.createDirectories(pastaBase);
         } catch (IOException e) {
@@ -19,7 +19,7 @@ public class MensagemRepository {
     }
 
     private Path arquivoCliente(Cliente c) {
-        return pastaBase.resolve("mensagens_cliente_" + c.getId() + ".txt");
+        return pastaBase.resolve("mensagens_cliente_" + c.getId() + ".txt"); // .resolve concatena o caminho src/data/mensagens_cliente_x.txt
     }
 
     public void enviarMensagem(Cliente cliente, String remetente, String conteudo) {
@@ -38,7 +38,7 @@ public class MensagemRepository {
         }
     }
 
-    public List<String> listarMensagens(Cliente cliente) {
+    public List<String> listarMensagens(Cliente cliente) { 
         Path arquivo = arquivoCliente(cliente);
         List<String> mensagens = new ArrayList<>();
         if (!Files.exists(arquivo)) return mensagens;

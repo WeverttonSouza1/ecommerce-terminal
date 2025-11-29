@@ -1,6 +1,5 @@
 package view;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
@@ -11,19 +10,18 @@ import core.Produto;
 import domain.Carrinho;
 import factoryMethod.PagamentoInterface;
 import factoryMethod.PagamentoFactory;
-import observer.Observer;
 import repository.GerenciadorDeArquivos;
 import repository.MensagemRepository;
 import repository.UsuarioRepository;
+import repository.ObserverRepository;
 import user.Cliente;
-
-	// Menu do cliente (acessível após login)
 
 public class MenuCliente {
     
     private final Cliente cliente;
     private final GerenciadorDeArquivos arquivo = new GerenciadorDeArquivos();
     private final MensagemRepository msgRepo = new MensagemRepository();
+    private final ObserverRepository observerRepo = new ObserverRepository();
     private final UsuarioRepository usuarioRepo;
     private final Carrinho carrinho = new Carrinho();
     private final Scanner sc = new Scanner(System.in);
@@ -35,6 +33,10 @@ public class MenuCliente {
 
     public void iniciar() {
         while (true) {
+            // Tratamento: Evita divisão por zero se a lista estiver vazia, embora o size() retorne 0
+            int qtdMensagens = msgRepo.listarMensagens(cliente).size();
+            int displayQtd = (qtdMensagens > 0) ? qtdMensagens / 4 : 0;
+
             System.out.println("\n=== MENU CLIENTE: " + cliente.getNome() + " ===");
             System.out.println("1 - Listar Produtos");
             System.out.println("2 - Adicionar produto ao carrinho");
@@ -42,7 +44,7 @@ public class MenuCliente {
             System.out.println("4 - Finalizar compra");
             System.out.println("5 - Editar Meus Dados");
             System.out.println("6 - Assinar Notificação de Estoque");
-            System.out.println("7 - Caixa de Mensagens (" + msgRepo.listarMensagens(cliente).size() + " novas)");
+            System.out.println("7 - Caixa de Mensagens (" + displayQtd + " novas)");
             System.out.println("8 - Histórico de Pedidos");
             System.out.println("9 - Logout");
             System.out.print("Escolha: ");
@@ -68,7 +70,10 @@ public class MenuCliente {
 
     private void listarProdutos() {
         System.out.println("\n=== CATÁLOGO DE PRODUTOS ===");
-        List<Produto> produtos = arquivo.carregarProdutos();
+        List<Produto> produtos = arquivo.carregarProdutos().stream()
+                .filter(Produto::isAtivo)
+                .toList();
+
         if (produtos.isEmpty()) {
             System.out.println("Nenhum produto cadastrado.");
         } else {
@@ -83,14 +88,13 @@ public class MenuCliente {
 
     private void adicionarProdutoAoCarrinho() {
         listarProdutos();
-        System.out.print("ID do produto: ");
-        Long id = Long.parseLong(sc.nextLine());
-        System.out.print("Quantidade: ");
-        int qtd = Integer.parseInt(sc.nextLine());
+        // TRATAMENTO DE ERRO: Uso do InputUtils
+        Long id = InputUtils.lerLong(sc, "ID do produto: ");
+        int qtd = InputUtils.lerInt(sc, "Quantidade: ");
 
         Optional<Produto> op = arquivo.buscarProdutoPorId(id);
-        if (op.isEmpty()) {
-            System.out.println("Produto não encontrado.");
+        if (op.isEmpty() || !op.get().isAtivo()) {
+            System.out.println("Produto não encontrado ou indisponível.");
             return;
         }
 
@@ -105,7 +109,7 @@ public class MenuCliente {
         System.out.println(String.format("Adicionado: %s (x%d)", p.getNome(), qtd));
     }
 
-    private void finalizarCompra() {
+    private void finalizarCompra() { 
         if (carrinho.getItens().isEmpty()) {
             System.out.println("Carrinho vazio.");
             return;
@@ -127,11 +131,12 @@ public class MenuCliente {
         };
 
         if (nomePagamento == null) {
-            System.out.println("Opção inválida.");
+            System.out.println("Opção de pagamento inválida.");
             return;
         }
 
         PagamentoInterface pagamento = PagamentoFactory.criarPagamento(nomePagamento);
+
         if (pagamento == null || !pagamento.processarPagamento(carrinho.total())) {
             System.out.println("Pagamento falhou. Compra cancelada.");
             return;
@@ -141,14 +146,18 @@ public class MenuCliente {
         pedido.setClienteId(cliente.getId());
         pedido.setEnderecoEntrega(cliente.getEndereco());
 
-        for (ItemPedido it : carrinho.getItens()) {
-            pedido.adicionarItem(it);
-            Optional<Produto> op = arquivo.buscarProdutoPorId(it.getProduto().getId()); // consegue receber dados null
-            // Optional<Produto> significa que a variável op é uma "caixa" que pode guardar um Produto
+        for (ItemPedido item : carrinho.getItens()) { // salva um produto por vez
+            pedido.adicionarItem(item);
+            Optional<Produto> op = arquivo.buscarProdutoPorId(item.getProduto().getId());
             if (op.isPresent()) {
                 Produto p = op.get();
-                p.setEstoque(p.getEstoque() - it.getQuantidade());
-                arquivo.salvarProduto(p);
+                // Simples verificação de segurança (embora já verificado no add carrinho)
+                if(p.getEstoque() >= item.getQuantidade()) {
+                    p.setEstoque(p.getEstoque() - item.getQuantidade());
+                    arquivo.salvarProduto(p);
+                } else {
+                    System.out.println("Aviso: Estoque alterado durante a compra para o item " + p.getNome());
+                }
             }
         }
 
@@ -158,16 +167,13 @@ public class MenuCliente {
 
         System.out.println("\nCompra concluída!");
         System.out.println("Pedido ID: " + pedido.getId());
-        System.out.println("Status: " + pedido.getStatus());
-        System.out.println("Total: R$ " + pedido.getTotal().toPlainString());
     }
 
     private void editarDados() {
         System.out.println("\n=== EDITAR MEUS DADOS ===");
-        System.out.println("Deixe em branco para manter o valor atual.");
         System.out.print("Nome (" + cliente.getNome() + "): ");
         String nome = sc.nextLine();
-        if (!nome.isBlank()) cliente.setNome(nome);
+        if (!nome.isBlank()) cliente.setNome(nome); // isBlank serve para verificar se uma string está vazia ou contém apenas espaços em branco
 
         System.out.print("Senha: ");
         String senha = sc.nextLine();
@@ -183,24 +189,27 @@ public class MenuCliente {
 
     private void assinarNotificacaoEstoque() {
         System.out.println("\n=== ASSINAR NOTIFICAÇÃO DE ESTOQUE ===");
-        listarProdutos();
-        System.out.print("ID do produto: ");
-        Long id = Long.parseLong(sc.nextLine());
+        arquivo.carregarProdutos().stream()
+               .filter(Produto::isAtivo) // chamar o método isAtivo() em cada objeto Produto da lista. // FILTRA: Mantém APENAS aqueles cujo isAtivo() é TRUE
+               .forEach(System.out::println);
+        
+        // TRATAMENTO DE ERRO: Input seguro
+        Long id = InputUtils.lerLong(sc, "ID do produto: ");
 
         Optional<Produto> op = arquivo.buscarProdutoPorId(id);
-        if (op.isEmpty()) {
+        if (op.isEmpty() || !op.get().isAtivo()) {
             System.out.println("Produto não encontrado.");
             return;
         }
 
         Produto p = op.get();
         if (p.getEstoque() > 0) {
-            System.out.println("Produto já em estoque.");
+            System.out.println("Produto já possui estoque disponível.");
             return;
         }
 
-        p.addObserver((Observer) cliente);
-        arquivo.salvarProduto(p);
+        observerRepo.adicionarObservador(p.getId(), cliente.getId());
+        
         System.out.println("Inscrição feita! Você será notificado quando o produto voltar ao estoque.");
     }
 
@@ -208,7 +217,7 @@ public class MenuCliente {
         while (true) {
             System.out.println("\n=== CAIXA DE MENSAGENS ===");
             List<String> msgs = msgRepo.listarMensagens(cliente);
-            System.out.println("1 - Ver mensagens (" + msgs.size() + ")");
+            System.out.println("1 - Ver mensagens");
             System.out.println("2 - Limpar mensagens");
             System.out.println("3 - Voltar");
             System.out.print("Escolha: ");
@@ -234,7 +243,7 @@ public class MenuCliente {
         List<Pedido> pedidos = arquivo.carregarPedidos();
         boolean encontrou = false;
         for (Pedido p : pedidos) {
-            if (p.getClienteId() == cliente.getId()) {
+            if (p.getClienteId().equals(cliente.getId())) {
                 System.out.println(p);
                 encontrou = true;
             }
@@ -244,4 +253,3 @@ public class MenuCliente {
         }
     }
 }
-

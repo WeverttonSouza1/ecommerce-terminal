@@ -1,5 +1,5 @@
 package observer;
 
-public interface Observer {
+public interface Observer { // Implementada em cliente
     void update(NotificacaoProduto notificacao);
 }

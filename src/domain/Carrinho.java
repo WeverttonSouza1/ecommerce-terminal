@@ -9,9 +9,9 @@ import java.util.List;
 public class Carrinho {
 	private List<ItemPedido> itens = new ArrayList<>();
 
-	public void adicionar(Produto p, int qtd) {
-		ItemPedido ip = new ItemPedido(p, qtd);
-		itens.add(ip);
+	public void adicionar(Produto produto, int qtd) {
+		ItemPedido itemProduto = new ItemPedido(produto, qtd);
+		itens.add(itemProduto);
 	}
 
 	public void removerPorProdutoId(Long produtoId) {

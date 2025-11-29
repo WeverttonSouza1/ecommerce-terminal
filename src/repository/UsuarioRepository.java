@@ -14,7 +14,7 @@ public class UsuarioRepository {
     private final Path usuariosFile = pastaBase.resolve("usuarios.txt");
     private final AtomicLong idGen;
 
-    public UsuarioRepository() {
+    public UsuarioRepository() { // primeiro execultado no programa, verifica se existe o arquivo usuario.txt
         try {
             if (!Files.exists(pastaBase)) Files.createDirectories(pastaBase);
             if (!Files.exists(usuariosFile)) Files.createFile(usuariosFile);
@@ -24,7 +24,7 @@ public class UsuarioRepository {
         idGen = new AtomicLong(loadLastId());
     }
 
-    private long loadLastId() { // evitar repetição de id e manter a ordem
+    private long loadLastId() { // descobre o maior ID para gerar um novo ID para o novo cliente
         if (!Files.exists(usuariosFile)) return 0;
         long max = 0;
         try (BufferedReader br = Files.newBufferedReader(usuariosFile)) {
@@ -58,24 +58,15 @@ public class UsuarioRepository {
 
             try (BufferedWriter bw = Files.newBufferedWriter(usuariosFile, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING)) {
                 for (Usuario us : todos) {
-                    String tipo = (us instanceof Administrador) ? "ADMIN" : "CLIENTE";
+                    String tipo = (us instanceof Administrador) ? "ADMIN" : "CLIENTE"; // instanceof está verificando qual é o tipo real desse objeto. se é admin ou cliente
                     String endereco = (us instanceof Cliente) ? ((Cliente) us).getEndereco() : "";
                     bw.write(String.format("%d;%s;%s;%s;%s;%s%n",
-                            us.getId(),
-                            us.getNome(),
-                            us.getEmail(),
-                            us.getSenha(),
-                            tipo,
-                            endereco));
+                            us.getId(), us.getNome(), us.getEmail(), us.getSenha(), tipo, endereco));
                 }
             }
 
-            // Garante que exista arquivo individual do cliente (se for cliente)
-            if (u instanceof Cliente c) {
-                Path userFile = pastaBase.resolve("usuario_" + c.getId() + ".txt");
-                if (!Files.exists(userFile)) Files.createFile(userFile);
-                Path pedidosFile = pastaBase.resolve("pedidos_cliente_" + c.getId() + ".txt");
-                if (!Files.exists(pedidosFile)) Files.createFile(pedidosFile);
+            // Garante arquivos auxiliares para clientes
+            if (u instanceof Cliente c) { // o instanceof verifica se o Usuario em questão é um Cliente
                 Path msgFile = pastaBase.resolve("mensagens_cliente_" + c.getId() + ".txt");
                 if (!Files.exists(msgFile)) Files.createFile(msgFile);
             }
@@ -95,6 +86,18 @@ public class UsuarioRepository {
         return listarUsuarios().stream()
                 .filter(u -> u.getEmail().equalsIgnoreCase(email))
                 .findFirst();
+    }
+    
+    // Novo método para buscar múltiplos usuários (útil para o Observer)
+    public List<Cliente> buscarClientesPorIds(List<Long> ids) {
+        List<Cliente> clientes = new ArrayList<>();
+        List<Usuario> todos = listarUsuarios();
+        for (Usuario u : todos) {
+            if (u instanceof Cliente && ids.contains(u.getId())) { // ids.contains() verifica se o id existe na lista
+                clientes.add((Cliente) u);
+            }
+        }
+        return clientes;
     }
 
     public List<Usuario> listarUsuarios() {
@@ -133,7 +136,6 @@ public class UsuarioRepository {
         } catch (IOException e) {
             System.err.println("Erro ao carregar usuários: " + e.getMessage());
         }
-
         return lista;
     }
 }

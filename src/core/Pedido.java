@@ -18,7 +18,7 @@ public class Pedido extends EntidadeBase {
     private List<ItemPedido> itens = new ArrayList<>();
     private LocalDateTime dataCriacao;
     private String status = "PROCESSANDO";
-    private BigDecimal total = BigDecimal.ZERO;
+    private BigDecimal total = BigDecimal.ZERO; // Garante que o total é 0, não null. evita erro no getTotal()
     private PedidoState state = new PedidoProcessando(this);
 
     public Pedido() {

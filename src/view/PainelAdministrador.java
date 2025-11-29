@@ -7,9 +7,11 @@ import java.util.Scanner;
 
 import core.Pedido;
 import core.Produto;
+import observer.NotificacaoProduto;
 import repository.GerenciadorDeArquivos;
 import repository.MensagemRepository;
 import repository.UsuarioRepository;
+import repository.ObserverRepository;
 import user.Administrador;
 import user.Cliente;
 import user.Usuario;
@@ -20,6 +22,7 @@ public class PainelAdministrador {
     private final GerenciadorDeArquivos arquivo = new GerenciadorDeArquivos();
     private final MensagemRepository msgRepo = new MensagemRepository();
     private final UsuarioRepository usuarioRepo;
+    private final ObserverRepository observerRepo = new ObserverRepository();
     private final Scanner sc = new Scanner(System.in);
 
     public PainelAdministrador(Administrador admin, UsuarioRepository usuarioRepo) {
@@ -67,31 +70,30 @@ public class PainelAdministrador {
         try {
             System.out.print("Nome: ");
             String nome = sc.nextLine();
-
+            
             System.out.print("Descrição: ");
             String descricao = sc.nextLine();
 
-            System.out.print("Preço (ex: 29.90): R$ ");
-            BigDecimal preco = new BigDecimal(sc.nextLine());
+            // TRATAMENTO DE ERRO: InputUtils garante que não quebre
+            BigDecimal preco = InputUtils.lerBigDecimal(sc, "Preço (ex: 29.90): R$ ");
+            int estoque = InputUtils.lerInt(sc, "Estoque inicial: ");
 
-            System.out.print("Estoque inicial: ");
-            int estoque = Integer.parseInt(sc.nextLine());
-
-            Produto p = new Produto(null, nome, descricao, preco, estoque);
+            Produto p = new Produto(null, nome, descricao, preco, estoque, "ATIVO");
             arquivo.salvarProduto(p);
 
-            System.out.println("✅ Produto cadastrado com sucesso!");
+            System.out.println("Produto cadastrado com sucesso!");
         } catch (Exception e) {
-            System.out.println("Erro ao cadastrar produto: " + e.getMessage());
+            // Tratamento genérico caso ocorra erro inesperado na gravação
+            System.out.println("Erro inesperado ao cadastrar produto: " + e.getMessage());
         }
     }
 
     private void editarProduto() {
         System.out.println("\n=== EDITAR PRODUTO ===");
         try {
+        	
             listarProdutos();
-            System.out.print("ID do produto: ");
-            Long id = Long.parseLong(sc.nextLine());
+            Long id = InputUtils.lerLong(sc, "ID do produto: ");
 
             Optional<Produto> op = arquivo.buscarProdutoPorId(id);
             if (op.isEmpty()) {
@@ -100,9 +102,10 @@ public class PainelAdministrador {
             }
             
             Produto p = op.get();
+            int estoqueAntigo = p.getEstoque();
+
             System.out.println("\nProduto atual: " + p);
-            
-            System.out.println("Deixe em branco para manter o valor atual.");
+            System.out.println("* Deixe em branco para manter o valor atual.");
 
             System.out.print("Novo nome (" + p.getNome() + "): ");
             String nome = sc.nextLine();
@@ -112,29 +115,69 @@ public class PainelAdministrador {
             String desc = sc.nextLine();
             if (!desc.isBlank()) p.setDescricao(desc);
 
+            // TRATAMENTO DE ERRO: Lógica específica para campo opcional
             System.out.print("Novo preço (" + p.getPreco() + "): R$ ");
             String precoStr = sc.nextLine();
-            if (!precoStr.isBlank()) p.setPreco(new BigDecimal(precoStr));
+            if (!precoStr.isBlank()) {
+                try {
+                    p.setPreco(new BigDecimal(precoStr.replace(",", ".")));
+                } catch (NumberFormatException e) {
+                    System.out.println("Formato de preço inválido. Valor mantido.");
+                }
+            }
 
+            // TRATAMENTO DE ERRO: Lógica específica para campo opcional
             System.out.print("Novo estoque (" + p.getEstoque() + "): ");
-            String estStr = sc.nextLine();
-            if (!estStr.isBlank()) p.setEstoque(Integer.parseInt(estStr));
+            String estoqueStr = sc.nextLine();
+            if (!estoqueStr.isBlank()) {
+                try {
+                    p.setEstoque(Integer.parseInt(estoqueStr));
+                } catch (NumberFormatException e) {
+                    System.out.println("Formato de estoque inválido. Valor mantido.");
+                }
+            }
+            
+            System.out.print("Ativar produto removido? (S/N): ");
+            String reativar = sc.nextLine();
+            if (reativar.equalsIgnoreCase("S")) p.setStatus("ATIVO");
 
             arquivo.salvarProduto(p);
-            System.out.println("✅ Produto atualizado com sucesso!");
+            System.out.println("Produto atualizado com sucesso!");
+
+            if (estoqueAntigo == 0 && p.getEstoque() > 0) {
+                notificarObservadores(p);
+            }
+
         } catch (Exception e) {
             System.out.println("Erro ao editar produto: " + e.getMessage());
         }
+    }
+
+    private void notificarObservadores(Produto p) {
+        List<Long> idsClientes = observerRepo.recuperarObservadores(p.getId());
+        if (idsClientes.isEmpty()) return;
+
+        System.out.println("Notificando " + idsClientes.size() + " clientes interessados...");
+        
+        List<Cliente> clientes = usuarioRepo.buscarClientesPorIds(idsClientes);
+        NotificacaoProduto notificacao = new NotificacaoProduto("O produto '" + p.getNome() + "' voltou ao estoque!");
+
+        for (Cliente c : clientes) {
+            c.update(notificacao);
+        }
+
+        observerRepo.removerObservadoresDoProduto(p.getId());
     }
 
     private void removerProduto() {
         System.out.println("\n=== REMOVER PRODUTO ===");
         try {
             listarProdutos();
-            System.out.print("ID do produto: ");
-            Long id = Long.parseLong(sc.nextLine());
+            // TRATAMENTO DE ERRO
+            Long id = InputUtils.lerLong(sc, "ID do produto: ");
+            
             arquivo.deletarProduto(id);
-            System.out.println("✅ Produto removido com sucesso!");
+            System.out.println("Produto marcado como REMOVIDO (ainda visível em históricos).");
         } catch (Exception e) {
             System.out.println("Erro ao remover produto: " + e.getMessage());
         }
@@ -168,8 +211,8 @@ public class PainelAdministrador {
         System.out.println("\n=== ALTERAR STATUS DO PEDIDO ===");
         listarPedidos();
 
-        System.out.print("Digite o ID do pedido: ");
-        Long id = Long.parseLong(sc.nextLine());
+        // TRATAMENTO DE ERRO
+        Long id = InputUtils.lerLong(sc, "Digite o ID do pedido: ");
 
         Optional<Pedido> op = arquivo.buscarPedidoPorId(id);
         if (op.isEmpty()) {
@@ -205,10 +248,8 @@ public class PainelAdministrador {
             String mensagem = "Seu pedido #" + pedido.getId() + " agora está com status: " + novoStatus;
             msgRepo.enviarMensagem(c, "Administrador", mensagem);
         }
-
-        System.out.println("✅ Status do pedido atualizado e cliente notificado!");
+        System.out.println("Status do pedido atualizado e cliente notificado!");
     }
-
     // ===========================
     // MENSAGENS 
     // ===========================
@@ -216,8 +257,8 @@ public class PainelAdministrador {
     private void enviarMensagemCliente() {
         System.out.println("\n=== ENVIAR MENSAGEM PARA CLIENTE ===");
         try {
-            System.out.print("ID do cliente: ");
-            Long idCliente = Long.parseLong(sc.nextLine());
+            // TRATAMENTO DE ERRO
+            Long idCliente = InputUtils.lerLong(sc, "ID do cliente: ");
 
             Optional<Usuario> op = usuarioRepo.buscarPorId(idCliente);
             if (op.isEmpty() || !(op.get() instanceof Cliente cliente)) {
@@ -229,7 +270,7 @@ public class PainelAdministrador {
             String mensagem = sc.nextLine();
 
             msgRepo.enviarMensagem(cliente, "Administrador (" + admin.getNome() + ")", mensagem);
-            System.out.println("✅ Mensagem enviada com sucesso!");
+            System.out.println("Mensagem enviada com sucesso!");
         } catch (Exception e) {
             System.out.println("Erro ao enviar mensagem: " + e.getMessage());
         }

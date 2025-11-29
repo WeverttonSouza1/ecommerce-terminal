@@ -3,13 +3,12 @@ package view;
 import java.util.Optional;
 import java.util.Scanner;
 
+import core.Produto;
+import repository.GerenciadorDeArquivos;
 import repository.UsuarioRepository;
 import user.Administrador;
 import user.Cliente;
 import user.Usuario;
-
-	// Classe principal do sistema.
-	// Controla o login, cadastro e visualização do catálogo.
 
 public class Loja {
 
@@ -73,35 +72,31 @@ public class Loja {
 
     private void cadastrar() {
         System.out.println("\n=== CADASTRO DE CLIENTE ===");
-
         Cliente cliente = new Cliente();
-
         System.out.print("Nome: ");
         cliente.setNome(sc.nextLine());
-
         System.out.print("Email: ");
         cliente.setEmail(sc.nextLine());
-
         System.out.print("Senha: ");
         cliente.setSenha(sc.nextLine());
-
-        System.out.print("Endereço de entrega (Rua, Número, Bairro, Cidade): ");
+        System.out.print("Endereço de entrega: ");
         cliente.setEndereco(sc.nextLine());
 
         usuarioRepo.salvarUsuario(cliente);
-
         System.out.println("\nCadastro concluído com sucesso!");
-        System.out.println("Agora você pode fazer login com seu e-mail e senha.");
     }
 
     private void verCatalogo() {
         System.out.println("\n=== CATÁLOGO (Acesso público) ===");
-        repository.GerenciadorDeArquivos arquivo = new repository.GerenciadorDeArquivos();
+        GerenciadorDeArquivos arquivo = new GerenciadorDeArquivos();
         var produtos = arquivo.carregarProdutos();
-        if (produtos.isEmpty()) {
+        
+        var produtosAtivos = produtos.stream().filter(Produto::isAtivo).toList();
+
+        if (produtosAtivos.isEmpty()) {
             System.out.println("Nenhum produto disponível.");
         } else {
-            produtos.forEach(System.out::println);
+            produtosAtivos.forEach(System.out::println);
         }
         System.out.println("------------------------------");
     }

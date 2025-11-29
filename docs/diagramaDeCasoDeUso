@@ -1,0 +1,49 @@
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+
+actor Cliente
+actor Não_Cliente
+actor Administrador as Admin
+actor Sistema as "Sistema (Observer)"
+
+rectangle ECommerce {
+
+    (Listar Produtos / Catálogo) as UC1
+    (Gerenciar Carrinho) as UC2
+    (Finalizar Compra / Pagar) as UC3
+    (Ver Histórico de Pedidos) as UC4
+    (Editar Dados do Cliente) as UC5
+    (Assinar Notificacao Estoque) as UC6
+    (Consultar Mensagens) as UC7
+    (Gerenciar Produtos) as UC8
+    (Atualizar Status Pedido) as UC9
+    (Disparar Notificacoes) as UC10
+    (Cadastrar-se) as UC11
+    
+}
+
+
+' Cliente
+Cliente -- UC1
+Cliente -- UC2
+Cliente -- UC3
+Cliente -- UC4
+Cliente -- UC5
+Cliente -- UC6
+Cliente -- UC7 
+
+Não_Cliente -- UC1
+Não_Cliente -- UC11
+
+' Administrador
+Admin -- UC8
+Admin -- UC9
+Admin -- UC10
+Admin -- UC7 : Enviar Mensagem
+
+' Relação do Observer (Sistema)
+UC6 <.. UC10 : <<Extends>> (Inscrição)
+UC10 .> Cliente : <<Notifica>>
+Admin --|> Sistema : (Inicia a notificação)
+@enduml

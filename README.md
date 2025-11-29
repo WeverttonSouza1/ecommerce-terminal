@@ -52,7 +52,7 @@ src/
  │    ├── Pedido.java
  │    └── Produto.java
  │
- ├── domain/        → Classes auxiliares
+ ├── domain/        → Classe auxiliar
  │    └──  Carrinho.java
  │
  ├── repository/    → Persistência em arquivo

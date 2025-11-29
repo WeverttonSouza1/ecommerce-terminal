@@ -1,0 +1,8 @@
+Remetente: Administrador (Admin)
+Data: 2025-11-25T15:48:06.250328600
+Mensagem: Seja bem vindo, magnata!
+------------------------------------------------
+Remetente: Administrador
+Data: 2025-11-25T16:51:52.820758600
+Mensagem: Seu pedido #6 agora está com status: ENVIADO
+------------------------------------------------

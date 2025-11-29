@@ -104,8 +104,8 @@ O diagrama de Caso de Uso mapeia todas as interações do sistema.
 ## Observações Importantes:
 
 * O sistema funciona totalmente por **arquivos .txt**, mas já está preparado para migração fácil ao banco de dados.
-* Arquivos criados por usuário seguirão o formato:  
-  usuario_(ID).txt, mensagens_cliente_(ID).txt e pedidos_cliente_(ID).txt
+* Arquivos criados para cada usuário seguirão o formato:  
+  mensagens_cliente_(ID).txt
 
 ## Autoria:
 

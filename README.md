@@ -1,4 +1,4 @@
-# 🛒 Sistema de E-commerce (Terminal) — Projeto Acadêmico
+# Sistema de E-commerce (Terminal) — Projeto Acadêmico
 ---
 **Entrega 03 – Projeto de Software (UPE – 2025.2)**
 

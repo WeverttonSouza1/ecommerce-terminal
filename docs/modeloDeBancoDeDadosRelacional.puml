@@ -1,0 +1,70 @@
+@startuml
+skinparam handwritten true
+skinparam linetype ortho
+skinparam maxmessagesize 300
+
+title Modelo Conceitual do E-commerce
+
+entity USUARIO {
+  *id : long <<PK>>
+  --
+  nome : varchar(255)
+  email : varchar(255) <<UK>>
+  senha : varchar(255)
+  tipo : varchar(50) (CLIENTE, ADMIN)
+  endereco : text
+}
+
+entity PRODUTO {
+  *id : long <<PK>>
+  --
+  nome : varchar(255)
+  descricao : text
+  preco : decimal
+  estoque : int
+  status : varchar(50) (ATIVO, INATIVO)
+}
+
+entity PEDIDO {
+  *id : long <<PK>>
+  --
+  -- FK
+  *cliente_id : long <<FK>>
+  --
+  data_criacao : datetime
+  total : decimal
+  status : varchar(50) (PROCESSANDO, ENVIADO, etc.)
+}
+
+entity ITEM_PEDIDO {
+  *id : long <<PK>>
+  --
+  *pedido_id : long <<FK>>
+  *produto_id : long <<FK>>
+  --
+  quantidade : int
+  preco_unitario : decimal
+}
+
+entity OBSERVADOR {
+  *produto_id : long <<PK, FK>>
+  *cliente_id : long <<PK, FK>>
+}
+
+' ======================
+' RELACIONAMENTOS
+' ======================
+
+' 1. Um Usuário (Cliente) pode ter zero ou muitos Pedidos (1:N)
+USUARIO "1" -- "0..*" PEDIDO : tem
+
+' 2. Um Pedido deve ter um ou muitos Itens (1:N)
+PEDIDO "1" -- "1..*" ITEM_PEDIDO : contém
+
+' 3. Um Item de Pedido referencia exatamente um Produto (N:1)
+ITEM_PEDIDO "0..*" -- "1" PRODUTO : referencia
+
+' 4. Um Usuário (Cliente) pode observar muitos Produtos, e um Produto pode ser observado por muitos Clientes (N:N, resolvida por OBSERVADOR)
+USUARIO "1" -- "0..*" OBSERVADOR : observa
+PRODUTO "1" -- "0..*" OBSERVADOR : é observado por
+@enduml

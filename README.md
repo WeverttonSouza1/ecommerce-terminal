@@ -88,7 +88,7 @@ src/
 
 ## Documentação UML e Persistência (Entrega 03)
 
-Os diagramas e o modelo de dados a seguir representam a arquitetura final do sistema.
+Os diagramas e o modelo de dados a seguir representam a arquitetura final do sistema. Os seus codigos podem ser encontrados na pasta **docs**, eles foram escritos em PlantUML.
 
 ### 1. Diagrama de Classes Detalhado
 
@@ -100,6 +100,10 @@ O diagrama demonstra a estrutura completa do código e a implementação dos pad
 O diagrama de Caso de Uso mapeia todas as interações do sistema.
 
 ![image alt](https://github.com/WeverttonSouza1/ecommerce-terminal/blob/759a6b4166448c9c30e80d354918171531f29f93/imagens/Diagrama%20de%20Caso%20de%20Uso.png)
+
+### 3. Modelo de Banco de Dados Relacional
+
+![image alt](https://github.com/WeverttonSouza1/ecommerce-terminal/blob/ad625ddac35700df1e90d9aea0f60d05a5b7f849/imagens/Modelo%20de%20Banco%20de%20Dados%20Relacional.png)
 
 ## Observações Importantes:
 

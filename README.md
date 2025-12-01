@@ -94,7 +94,7 @@ Os diagramas e o modelo de dados a seguir representam a arquitetura final do sis
 
 O diagrama demonstra a estrutura completa do código e a implementação dos padrões **Factory Method**, **State** e **Observer** nas suas respectivas *packages*.
 
-![image alt](https://github.com/WeverttonSouza1/ecommerce-terminal/blob/759a6b4166448c9c30e80d354918171531f29f93/imagens/Diagrama%20de%20Classes.png)
+![image alt](https://github.com/WeverttonSouza1/ecommerce-terminal/blob/042a0b1f19cb4df134c5e9bceaa8c9af330ee97b/imagens/Diagrama%20de%20classes.png)
 
 ### 2. Diagrama de Caso de Uso
 O diagrama de Caso de Uso mapeia todas as interações do sistema.

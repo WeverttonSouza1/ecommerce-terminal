@@ -103,7 +103,7 @@ O diagrama de Caso de Uso mapeia todas as interações do sistema.
 
 ### 3. Modelo de Banco de Dados Relacional
 
-![image alt](https://github.com/WeverttonSouza1/ecommerce-terminal/blob/ad625ddac35700df1e90d9aea0f60d05a5b7f849/imagens/Modelo%20de%20Banco%20de%20Dados%20Relacional.png)
+![image alt](https://github.com/WeverttonSouza1/ecommerce-terminal/blob/70936616dd1b04b6f6e593db630bf10d4b2df189/imagens/Modelo%20de%20Banco%20de%20Dados%20Relacional.png)
 
 ## Observações Importantes:
 

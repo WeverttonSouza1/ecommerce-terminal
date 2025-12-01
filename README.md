@@ -79,6 +79,43 @@ src/
       └── MenuCliente.java
 ```
 
+## Utilização do MVC
+O projeto adota os princípios da arquitetura Model-View-Controller (MVC) para promover a Separação de Preocupações (Separation of Concerns), isolando a lógica de negócio da interface do usuário.
+
+A estrutura de packages segue rigorosamente esta separação:
+
+1. Model (O Modelo de Dados e Negócios)
+O Model é a camada mais importante do sistema, responsável por toda a lógica de negócio, dados e estado da aplicação.
+
+Mapeamento no Projeto:
+
+core/: Contém as entidades centrais (Produto, Pedido).
+
+domain/: Contém regras e objetos auxiliares (Carrinho).
+
+repository/: Contém a lógica de persistência e acesso aos dados (UsuarioRepository, GerenciadorDeArquivos).
+
+Função: O Model sabe o que fazer com os dados, como calcular o total de um pedido, qual é o estado atual de um produto ou como salvar um usuário.
+
+2. View (A Interface de Usuário)
+A View é responsável apenas pela apresentação e pela coleta de entrada do usuário.
+
+Mapeamento no Projeto:
+
+view/: Contém as classes que gerenciam a interface de terminal (Loja, MenuCliente, PainelAdministrador).
+
+Função: Apresentar as informações (catálogo, menus) ao usuário e capturar as entradas do teclado (ler um Long, ler uma opção de menu). A View não contém regras de negócio.
+
+3. Controller (O Fluxo da Aplicação)
+O Controller atua como um intermediário. Ele recebe o input da View, chama as ações apropriadas no Model e decide qual View atualizar em seguida.
+
+Mapeamento no Projeto:
+
+As classes em view/ (MenuCliente, PainelAdministrador) atuam como Controllers ao gerenciarem os menus.
+
+Função: Quando o usuário clica em "Finalizar Compra" (input da View), o Controller chama o Model (Carrinho.total(), PagamentoFactory.criarPagamento()) e, dependendo do resultado, volta para o menu principal ou exibe uma mensagem de erro na View.
+
+
 ### Interface de Terminal:
 
 * Menu inicial (Entrar / Cadastrar-se / Ver catálogo / Sair)

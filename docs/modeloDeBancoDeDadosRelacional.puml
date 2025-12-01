@@ -1,5 +1,5 @@
 @startuml
-skinparam handwritten true
+!option handwritten true
 skinparam linetype ortho
 skinparam maxmessagesize 300
 

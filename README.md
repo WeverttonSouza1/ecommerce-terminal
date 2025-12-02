@@ -9,7 +9,7 @@ Este projeto foi estendido e finalizado para a disciplina **Programação III**,
 
 ## Objetivo Geral do Projeto:
 
-Construir um sistema de e-commerce completo em Java, com forte foco em **engenharia de software** e **arquitetura limpa**, utilizando:
+Construi um sistema de e-commerce completo em Java, com forte foco em **engenharia de software** e **arquitetura limpa**, utilizando:
 
 * Modelagem UML completa (caso de uso + classes) que reflete o código final.
 * Arquitetura organizada em camadas (View, Domain, Core, Repository).

@@ -84,7 +84,7 @@ O projeto adota os princípios da arquitetura Model-View-Controller (MVC) para p
 
 A estrutura de packages segue rigorosamente esta separação:
 
-**1. Model (O Modelo de Dados e Negócios)**  
+### 1. Model (O Modelo de Dados e Negócios)    
 O Model é a camada mais importante do sistema, responsável por toda a lógica de negócio, dados e estado da aplicação.
 
 Mapeamento no Projeto:
@@ -97,7 +97,7 @@ repository/: Contém a lógica de persistência e acesso aos dados (UsuarioRepos
 
 Função: O Model sabe o que fazer com os dados, como calcular o total de um pedido, qual é o estado atual de um produto ou como salvar um usuário.
 
-**2. View (A Interface de Usuário)**  
+### 2. View (A Interface de Usuário)  
 A View é responsável apenas pela apresentação e pela coleta de entrada do usuário.
 
 Mapeamento no Projeto:
@@ -106,7 +106,7 @@ view/: Contém as classes que gerenciam a interface de terminal (Loja, MenuClien
 
 Função: Apresentar as informações (catálogo, menus) ao usuário e capturar as entradas do teclado (ler um Long, ler uma opção de menu). A View não contém regras de negócio.
 
-**3. Controller (O Fluxo da Aplicação)**  
+### 3. Controller (O Fluxo da Aplicação)  
 O Controller atua como um intermediário. Ele recebe o input da View, chama as ações apropriadas no Model e decide qual View atualizar em seguida.
 
 Mapeamento no Projeto:
